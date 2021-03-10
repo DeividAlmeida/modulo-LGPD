@@ -14,3 +14,19 @@ INSERT INTO `lgbd` (`id`, `modo`) VALUES (
     1, 
     '<script src=\"https://cdn.jsdelivr.net/npm/vue@2\"></script>'
     );
+CREATE TABLE IF NOT EXISTS `lgbd_categoria` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nome` varchar(255) DEFAULT NULL,
+    `tipo` varchar(255) DEFAULT NULL,
+    `titulo` varchar(255) DEFAULT NULL,
+    `principal` varchar(255) DEFAULT NULL,
+    `botao` varchar(255) DEFAULT NULL,
+    `ajuda` varchar(255) DEFAULT NULL,
+    `cor_txt_ajuda` varchar(255) DEFAULT NULL,
+    `cor_btn` varchar(255) DEFAULT NULL,
+    `cor_txt_btn` varchar(255) DEFAULT NULL,
+    `cor_fundo` varchar(255) DEFAULT NULL,
+    `cor_txt_titulo` varchar(255) DEFAULT NULL,
+    `cor_txt_principla` varchar(255) DEFAULT NULL,
+    `conteudo` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

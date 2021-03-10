@@ -24,13 +24,13 @@
     	<div class="container-fluid animatedParent animateOnce my-3" >
             <div class="pb-3">
     			<span class="dropdown">
-    			        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Categorias</a>
+    			        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Avisos</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
-    					<a class="dropdown-item " href="?">Categorias</a>
-    						<a class="dropdown-item" href="?categoria=0">Cadastrar Categoria</a>
+    					<a class="dropdown-item " href="?">Ver Avisos</a>
+    						<a class="dropdown-item" href="?categoria=0">Cadastrar Avisos</a>
     				</div>
     			</span>			
-    			<a class="btn btn-sm btn-primary" href="?Config">Configuração</a>
+    		
     		</div>
             <?php 
             if (isset($_GET['Config']) && checkPermission($PERMISSION, $_SERVER['SCRIPT_NAME'], 'configuracao', 'acessar')) :
