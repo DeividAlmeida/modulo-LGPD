@@ -24,9 +24,10 @@ CREATE TABLE IF NOT EXISTS `lgbd_categoria` (
     `ajuda` varchar(255) DEFAULT NULL,
     `cor_txt_ajuda` varchar(255) DEFAULT NULL,
     `cor_btn` varchar(255) DEFAULT NULL,
+    `cor_barra` varchar(255) DEFAULT NULL,
     `cor_txt_btn` varchar(255) DEFAULT NULL,
     `cor_fundo` varchar(255) DEFAULT NULL,
     `cor_txt_titulo` varchar(255) DEFAULT NULL,
     `cor_txt_principla` varchar(255) DEFAULT NULL,
-    `conteudo` text DEFAULT NULL
+    `mce_0` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

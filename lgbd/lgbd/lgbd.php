@@ -6,6 +6,7 @@ $db = $modulo['tabela'].'_'.$nome;
 $main = json_encode(DBRead($db,'*'));
 $status = $_GET[$nome];
 $a = DBRead($db,'*',"WHERE id = '{$status}'");
+var_dump($a);
 if(isset($_GET['salvar'])):
     foreach($_POST as $name => $valor){
         $data[$name]=$valor;
@@ -18,12 +19,12 @@ if(isset($_GET['salvar'])):
     };
 endif;
 ?>
-<!--<script src='https://cdn.jsdelivr.net/npm/vue-mce@1.5.2/dist/vue-mce.web.js'></script>-->
-<div class="card"  >
+<script src='https://cdn.jsdelivr.net/npm/vue-mce@1.5.2/dist/vue-mce.web.js'></script>
+<div class="card"  >    
     <div id="control" v-if="!status">
         <div class="card-header white" >
             <strong>Adicionar aviso</strong>
-                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" @click="move('0')" >
+                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" @click="move('0', 0)" >
                     <i class="icon-plus blue lighten-2 avatar"></i> 
                 </a>
         </div>
@@ -85,12 +86,12 @@ endif;
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
-                        <input class="form-control" v-model="ctrls[idx].nome" name="nome" required>
+                        <input class="form-control" :value="ctrls[idx].nome" name="nome" required>
                     </div>
-                    <div v-if='ctrls[idx].tipo == "0"'>
+                    <div v-if='ctrls[idx].tipo'>
                         <div class="form-group">
                             <label>Texto conteúdo ajuda: </label>
-                            <!--<vue-mce :config="config" v-model="ctrls[idx].conteudo"  name="conteudo"/>-->
+                            <vue-mce :config="config" :value="ctrls[idx].mce_0" />
                         </div>
                     </div>
                 </div>
@@ -102,27 +103,27 @@ endif;
                             <option value='1'>Completo</option></option>
                         </select>
                     </div>
-                    <div v-if='ctrls[idx].tipo == "0"'>
-                        <div class="form-group">
+                    <div v-if='ctrls[idx].tipo'>
+                        <div class="form-group" v-if='ctrls[idx].tipo == "0"'>
                             <label>Texto título: </label>
-                            <input class="form-control" v-model="ctrls[idx].titulo" name="titulo" required>
+                            <input class="form-control" :value="ctrls[idx].titulo" name="titulo" required>
                         </div>
                         <div class="form-group">
                             <label>Texto principal: </label>
-                            <input class="form-control" v-model="ctrls[idx].principal" name="principal" required>
+                            <input class="form-control" :value="ctrls[idx].principal" name="principal" required>
                         </div>
                         <div class="form-group">
                             <label>Texto botão: </label>
-                            <input class="form-control" v-model="ctrls[idx].botao" name="botao" required>
+                            <input class="form-control" :value="ctrls[idx].botao" name="botao" required>
                         </div>
                         <div class="form-group">
                             <label>Texto ajuda: </label>
-                            <input class="form-control" v-model="ctrls[idx].ajuda" name="ajuda" required>
+                            <input class="form-control" :value="ctrls[idx].ajuda" name="ajuda" required>
                         </div>
-                        <div class="form-group">
-                            <label>Cor do Fundo:</label>
+                        <div class="form-group" v-if="ctrls[idx].tipo == '1'">
+                            <label>Cor da Barra:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input value="<?php echo $a['cor_fundo'] ?>" class="form-control" name="cor_fundo" >
+                              <input :value="ctrls[idx].cor_barra" class="form-control" name="cor_barra" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -131,9 +132,20 @@ endif;
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Cor texto título:</label>
+                            <label>Cor do Fundo {{ctrls[idx].tipo == '1'? 'do Popup': ''}}:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input value="<?php echo $a['cor_txt_titulo'] ?>" class="form-control" name="cor_txt_titulo" >
+                              <input :value="ctrls[idx].cor_fundo" class="form-control" name="cor_fundo" >
+                                <span class="input-group-append">
+                                    <span class="input-group-text add-on white">
+                                        <i class="circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cor texto {{ctrls[idx].tipo == '1'? 'do Popup': 'do título'}}:</label>
+                            <div class="color-picker input-group colorpicker-element focused">
+                              <input :value="ctrls[idx].cor_txt_titulo" class="form-control" name="cor_txt_titulo" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -144,7 +156,7 @@ endif;
                         <div class="form-group">
                             <label>Cor texto principal:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input value="<?php echo $a['cor_txt_principla'] ?>" class="form-control" name="cor_txt_principla" >
+                              <input :value="ctrls[idx].cor_txt_principla" class="form-control" name="cor_txt_principla" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -155,7 +167,7 @@ endif;
                         <div class="form-group">
                         <label>Cor texto botão:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input value="<?php echo $a['cor_txt_btn'] ?>" class="form-control" name="cor_txt_btn" >
+                          <input :value="ctrls[idx].cor_txt_btn" class="form-control" name="cor_txt_btn" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -166,7 +178,7 @@ endif;
                     <div class="form-group">
                         <label>Cor botão:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input value="<?php echo $a['cor_btn'] ?>" class="form-control" name="cor_btn" >
+                          <input :value="ctrls[idx].cor_btn" class="form-control" name="cor_btn" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -177,7 +189,7 @@ endif;
                     <div class="form-group">
                         <label>Cor texto ajuda:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input value="<?php echo $a['cor_txt_ajuda'] ?>" class="form-control" name="cor_txt_ajuda" >
+                          <input :value="ctrls[idx].cor_txt_ajuda" class="form-control" name="cor_txt_ajuda" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -185,25 +197,126 @@ endif;
                             </span>
                         </div>
                     </div>
-                    </div>
                 </div>
             </div>
+        </div>
             <div class="row" v-if="status == 0">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
                         <input class="form-control"  name="nome" required>
                     </div>
+                    <div v-if='tipo'>
+                        <div class="form-group">
+                            <label>Texto conteúdo ajuda: </label>
+                            <vue-mce :config="config"  />
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Tipo: </label>
-                        <select   name='tipo' class='form-control'  required> 
+                        <select   name='tipo' class='form-control' v-model="tipo" required> 
                             <option value='0'>Reduzido</option>
                             <option value='1'>Completo</option></option>
                         </select>
                     </div>
+                    <div v-if='tipo'>
+                        <div class="form-group" v-if='tipo == "0"'>
+                            <label>Texto título: </label>
+                            <input class="form-control"  name="titulo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Texto principal: </label>
+                            <input class="form-control"  name="principal" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Texto botão: </label>
+                            <input class="form-control"  name="botao" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Texto ajuda: </label>
+                            <input class="form-control"  name="ajuda" required>
+                        </div>
+                        <div class="form-group" v-if="tipo == '1'">
+                            <label>Cor da Barra:</label>
+                            <div class="color-picker input-group colorpicker-element focused">
+                              <input  class="form-control" name="cor_barra" >
+                                <span class="input-group-append">
+                                    <span class="input-group-text add-on white">
+                                        <i class="circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cor do Fundo {{tipo == '1'? 'do Popup': ''}}:</label>
+                            <div class="color-picker input-group colorpicker-element focused">
+                              <input  class="form-control" name="cor_fundo" >
+                                <span class="input-group-append">
+                                    <span class="input-group-text add-on white">
+                                        <i class="circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cor texto {{tipo == '1'? 'do Popup': 'do título'}}:</label>
+                            <div class="color-picker input-group colorpicker-element focused">
+                              <input  class="form-control" name="cor_txt_titulo" >
+                                <span class="input-group-append">
+                                    <span class="input-group-text add-on white">
+                                        <i class="circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cor texto principal:</label>
+                            <div class="color-picker input-group colorpicker-element focused">
+                              <input  class="form-control" name="cor_txt_principla" >
+                                <span class="input-group-append">
+                                    <span class="input-group-text add-on white">
+                                        <i class="circle"></i>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <label>Cor texto botão:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                          <input  class="form-control" name="cor_txt_btn" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cor botão:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                          <input  class="form-control" name="cor_btn" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cor texto ajuda:</label>
+                        <div class="color-picker input-group colorpicker-element focused">
+                          <input  class="form-control" name="cor_txt_ajuda" >
+                            <span class="input-group-append">
+                                <span class="input-group-text add-on white">
+                                    <i class="circle"></i>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
+            </div>
             </div>
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
@@ -213,7 +326,7 @@ endif;
 </div>
 <script>
     const config = {
-        height: 600,
+        height: 561,
         inline: false,
         theme: 'modern',
         language:'pt_BR',
@@ -229,20 +342,27 @@ endif;
         el:".card",
         data: {
             config,
-            idx:'',
+            tipo:null,
+            idx:null,
             status:'<?php echo $status ?>',
             ctrls:<?php echo $main ?>,
             filho:'<?php echo $filho ?>',
             codigo:[]            
         },
+        updated: function(){
+            this.$nextTick(function(){
+                $('.color-picker').colorpicker();
+            })
+        },
         methods:{
             move: function(a, b){
                 this.status = a;
-                this.idx = b;
+                this.idx = b;           
             }
         }
     })
     for(let i = 0; i<vue.ctrls.length; i++){
         vue.codigo.push("<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+vue.ctrls[i].id+"' ></iframe>")
     }
+    
 </script>
