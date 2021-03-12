@@ -5,8 +5,6 @@ $pai = 'lgbd';
 $db = $modulo['tabela'].'_'.$nome;
 $main = json_encode(DBRead($db,'*'));
 $status = $_GET[$nome];
-$a = DBRead($db,'*',"WHERE id = '{$status}'");
-var_dump($a);
 if(isset($_GET['salvar'])):
     foreach($_POST as $name => $valor){
         $data[$name]=$valor;
@@ -43,7 +41,7 @@ endif;
                             <td>{{index+1}}</td>
                             <td>{{ctrl.nome}}</td>
                             <td>
-                                <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))"  :data-clipboard-text="codigo[index]" type="button">
+                                <button :id="'btnCopiarCodSite'+ctrls[index].id" class="btn btn-primary btn-xs m-1" :idi="ctrls[index].id" onclick="CopiadoCodSite(getAttribute('idi'))" :data-clipboard-text="'<script '+vue+'></script><div '+div+'></div><script>'+codigo[index]+'</script>'" type="button">
                                     <i class="icon icon-code"></i> Copiar Código 
                                 </button>
                             </td>
@@ -81,8 +79,9 @@ endif;
         </div>
     </div>
     <div class="card-body" v-else>
-        <form method="post" :action="'?<?php echo $nome ?>&salvar='+status" enctype="multipart/form-data">
+        <form method="post" :action="'?<?php echo $nome ?>&salvar='+status" enctype="multipart/form-data">            
             <div class="row" v-if="status !=0">
+                <input type="hidden" name="analitycs" :value="JSON.stringify(ctrls[idx].analitycs)">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
@@ -123,7 +122,7 @@ endif;
                         <div class="form-group" v-if="ctrls[idx].tipo == '1'">
                             <label>Cor da Barra:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input :value="ctrls[idx].cor_barra" class="form-control" name="cor_barra" >
+                              <input v-once :value="ctrls[idx].cor_barra" class="form-control" name="cor_barra" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -134,7 +133,7 @@ endif;
                         <div class="form-group">
                             <label>Cor do Fundo {{ctrls[idx].tipo == '1'? 'do Popup': ''}}:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input :value="ctrls[idx].cor_fundo" class="form-control" name="cor_fundo" >
+                              <input v-once :value="ctrls[idx].cor_fundo" class="form-control" name="cor_fundo" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -145,7 +144,7 @@ endif;
                         <div class="form-group">
                             <label>Cor texto {{ctrls[idx].tipo == '1'? 'do Popup': 'do título'}}:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input :value="ctrls[idx].cor_txt_titulo" class="form-control" name="cor_txt_titulo" >
+                              <input v-once :value="ctrls[idx].cor_txt_titulo" class="form-control" name="cor_txt_titulo" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -156,7 +155,7 @@ endif;
                         <div class="form-group">
                             <label>Cor texto principal:</label>
                             <div class="color-picker input-group colorpicker-element focused">
-                              <input :value="ctrls[idx].cor_txt_principla" class="form-control" name="cor_txt_principla" >
+                              <input v-once :value="ctrls[idx].cor_txt_principla" class="form-control" name="cor_txt_principla" >
                                 <span class="input-group-append">
                                     <span class="input-group-text add-on white">
                                         <i class="circle"></i>
@@ -167,7 +166,7 @@ endif;
                         <div class="form-group">
                         <label>Cor texto botão:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input :value="ctrls[idx].cor_txt_btn" class="form-control" name="cor_txt_btn" >
+                          <input v-once :value="ctrls[idx].cor_txt_btn" class="form-control" name="cor_txt_btn" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -178,7 +177,7 @@ endif;
                     <div class="form-group">
                         <label>Cor botão:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input :value="ctrls[idx].cor_btn" class="form-control" name="cor_btn" >
+                          <input v-once :value="ctrls[idx].cor_btn" class="form-control" name="cor_btn" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -189,7 +188,7 @@ endif;
                     <div class="form-group">
                         <label>Cor texto ajuda:</label>
                         <div class="color-picker input-group colorpicker-element focused">
-                          <input :value="ctrls[idx].cor_txt_ajuda" class="form-control" name="cor_txt_ajuda" >
+                          <input v-once :value="ctrls[idx].cor_txt_ajuda" class="form-control" name="cor_txt_ajuda" >
                             <span class="input-group-append">
                                 <span class="input-group-text add-on white">
                                     <i class="circle"></i>
@@ -199,8 +198,43 @@ endif;
                     </div>
                 </div>
             </div>
-        </div>
+        </div><br><br>
+        <div class="col-md-12" v-if="ctrls[idx].tipo == '1'">               
+            <div class="form-group">
+                <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
+            </div>
+        </div>        
+        <div v-if="ctrls[idx].tipo == '1'" v-for='field, index in ctrls[idx].analitycs' >
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Título: </label>
+                        <input class="form-control" v-model="field.titulo" :key="index+field">
+                    </div>
+                </div>
+            
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Descrição: </label>
+                        <textarea class="form-control" v-model="field.descricao" :key="index+field"></textarea>
+                    </div>
+                </div>
+            
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Código: </label>
+                        <textarea class="form-control" v-model="field.codigo"   rows="5" :key="index+field"></textarea>
+                    </div>
+                </div>
+            
+                <div class="col align-self-center pull-right"  >
+                    <button type="button" @click="remove(index)" class="btn btn-danger btnRemove"><i class="icon-trash"></i></button>
+                </div>            
+            </div>
+        </div>        
+    
             <div class="row" v-if="status == 0">
+                <input type="hidden" name="analitycs" :value="JSON.stringify(analitycs)">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Nome: </label>
@@ -317,7 +351,41 @@ endif;
                     </div>
                 </div>
             </div>
+        </div><br><br>
+        <div class="col-md-12" v-if="tipo == 1">               
+            <div class="form-group">
+                <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
             </div>
+        </div>        
+        <div v-if="tipo == 1" v-for='field, index in analitycs' >
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Título: </label>
+                        <input class="form-control" v-model="field.titulo" :key="index+field">
+                    </div>
+                </div>
+            
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Descrição: </label>
+                        <textarea class="form-control" v-model="field.descricao" :key="index+field"></textarea>
+                    </div>
+                </div>
+            
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Código: </label>
+                        <textarea class="form-control" v-model="field.codigo" rows="5" :key="index+field"></textarea>
+                    </div>
+                </div>
+            
+                <div class="col align-self-center pull-right"  >
+                    <button type="button" @click="remove(index)" class="btn btn-danger btnRemove"><i class="icon-trash"></i></button>
+                </div>            
+            </div>
+        </div>
+        
             <div class="card-footer white">
                 <button style="margin-bottom: 7px;" class="btn btn-primary float-right" type="submit"><i class="icon icon-save" aria-hidden="true"></i> Salvar</button>
             </div>
@@ -347,22 +415,33 @@ endif;
             status:'<?php echo $status ?>',
             ctrls:<?php echo $main ?>,
             filho:'<?php echo $filho ?>',
-            codigo:[]            
+            vue:'src="https://cdn.jsdelivr.net/npm/vue@2"',
+            div:'id="lgbd"',
+            codigo:[],
+            analitycs:[{'titulo':'','descricao':'', 'codigo':''}]       
         },
         updated: function(){
             this.$nextTick(function(){
-                $('.color-picker').colorpicker();
+                $('.color-picker').colorpicker();                               
             })
         },
         methods:{
             move: function(a, b){
                 this.status = a;
                 this.idx = b;           
+            },
+            add: function(){
+                this.status == 0? this.analitycs.push({'titulo':'','descricao':'', 'codigo':''}):this.ctrls[this.idx].analitycs.push({'titulo':'','descricao':'', 'codigo':''})
+            }, 
+            remove: function(index){
+                this.status == 0? this.analitycs.splice(index, 1): this.ctrls[this.idx].analitycs.splice(index, 1)
             }
         }
     })
-    for(let i = 0; i<vue.ctrls.length; i++){
-        vue.codigo.push("<iframe onload='frame(this)'  src='<?php echo ConfigPainel('base_url') ?>wa/cardapio/?id="+vue.ctrls[i].id+"' ></iframe>")
-    }
-    
+    window.onload = () =>{
+        for(let i = 0; i<vue.ctrls.length; i++){
+            vue.ctrls[i].analitycs = JSON.parse(vue.ctrls[i].analitycs)
+            vue.codigo.push("$('#lgbd').load('<?php echo ConfigPainel('base_url')?>wa/lgbd/?id="+vue.ctrls[i].id+"')")
+        }
+    } 
 </script>
