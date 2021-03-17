@@ -113,6 +113,7 @@ $db =  json_encode($banco);
             overflow-y:scroll;
             overflow-x:hidden;
             max-height:150px;
+            padding-left:5%;
         }
 
         /*COMPLETO*/ 
@@ -148,7 +149,7 @@ $db =  json_encode($banco);
             display: flex;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            width: 95%;
+            width: 98%;
         }
         .lgbd_titulo_anali{
             float:left;
@@ -156,7 +157,7 @@ $db =  json_encode($banco);
             white-space: normal;
         }
         .lgbd_descricao_anali{
-            width:55%;
+            width:65%;
             margin:0 10px;
             font-size: 12px;
         }
@@ -230,6 +231,11 @@ $db =  json_encode($banco);
             overflow-x:hidden;
             overflow-y:scroll;
             max-height:150px;
+            margin-left: 5%;
+        }
+        #lgbd_btn{
+            margin-left: 5%;
+            margin-top: 5%;
         }
     </style>
 </head>
@@ -246,15 +252,14 @@ $db =  json_encode($banco);
                 </div>
             </div>
         </div>
-        <div v-if="idx" class="back" @click="close()"></div>
-        <div v-if="idx" class="lgbd_popup">
-            <span class="lgbf_fechar"  @click="close()"> 	&times; </span>
+        <div v-if="idx" class="back" @click="Close()"></div>
+        <div v-if="idx" class="lgbd_popup">            
             <div class="controle">
                 <div class="lgbd_anali" v-for="row, id of db.analitycs">
                     <b class="lgbd_titulo_anali">{{row.titulo}}</b>
                     <div class="lgbd_descricao_anali">{{row.descricao}}</div>
                     <div class="form-group">
-                        <input type="checkbox" :id="'css'+id">
+                        <input :value="row.titulo" type="checkbox" :id="'css'+id">
                         <label :for="'css'+id"></label>
                     </div>
                 </div>
@@ -263,7 +268,7 @@ $db =  json_encode($banco);
                 <span v-html="db.mce_0" ></span>
             </div>
             <div>
-                <button class="gdpr-agreement btn-accent btn-flat" type="button">Salvar Preferências</button>            
+                <button id="lgbd_btn" class="gdpr-agreement btn-accent btn-flat" type="button" @click="all(1)">Salvar Preferências</button>            
             </div>
         </div>
         <div class="gdpr gdpr-privacy-bar" >
@@ -274,7 +279,7 @@ $db =  json_encode($banco);
                 </div>
                 <div class="gdpr-right">
                     <button class="gdpr-preferences" type="button" @click="open()">{{db.ajuda}}</button>
-                    <button class="gdpr-agreement btn-accent btn-flat" type="button" @click="all()">{{db.botao}}</button>
+                    <button class="gdpr-agreement btn-accent btn-flat" type="button" @click="all(0)">{{db.botao}}</button>
                 </div>
             </div>
         </div>
@@ -293,12 +298,23 @@ $db =  json_encode($banco);
             open: function(){
                 this.idx = 'on'
             }, 
-            close: function(){
+            Close: function(){
                 this.idx = null
             },
-            all: function(){
-                for(let i = 0; i< this.db.analitycs.length; ++i){
-                    localStorage.setItem('WAC'+this.db.analitycs[i].titulo,true) 
+            all: function(a){
+                if(a==0){                    
+                    for(let i = 0; i< this.db.analitycs.length; ++i){
+                        localStorage.setItem('WAC'+this.db.analitycs[i].titulo,true)
+                        $('#analitycs'+i).load(vue.origin+'wa/lgbd/api/api.php?id=<?php echo $id; ?>&codigo='+i) 
+                    }
+                }else{
+                    for(let i = 0; i< this.db.analitycs.length; ++i){
+                        if(document.getElementById('css'+i).checked){                            
+                            localStorage.setItem('WAC'+this.db.analitycs[i].titulo,true) 
+                            $('#analitycs'+i).load(vue.origin+'wa/lgbd/api/api.php?id=<?php echo $id; ?>&codigo='+i)
+                        }
+                    }
+                    this.idx = null
                 }
                 localStorage.setItem('WACcompleto',true) 
                 document.getElementsByClassName('gdpr-privacy-bar')[0].style.display ='none'
@@ -314,7 +330,7 @@ $db =  json_encode($banco);
             })
             !localStorage.getItem('WACreduzido')? setTimeout(document.getElementsByClassName('cookie-alert')[0].setAttribute('class', 'card cookie-alert  show'), 1000):null;
         }else{
-            !localStorage.getItem('WACcompleto')? document.getElementsByClassName('gdpr-privacy-bar')[0].style.display ='block':null
+            !localStorage.getItem('WACcompleto')? document.getElementsByClassName('gdpr-privacy-bar')[0].style.display ='block':document.getElementsByClassName('gdpr-privacy-bar')[0].style.display ='none';
             for(let i = 0; i< vue.db.analitycs.length; ++i){
                 if(localStorage.getItem('WAC'+vue.db.analitycs[i].titulo)){
                     $('#analitycs'+i).load(vue.origin+'wa/lgbd/api/api.php?id=<?php echo $id; ?>&codigo='+i)

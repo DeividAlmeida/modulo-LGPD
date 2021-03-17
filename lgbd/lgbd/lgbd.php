@@ -1,6 +1,6 @@
 <?php
 $nome = 'categoria';
-$filho = 'item';
+$filho = null;
 $pai = 'lgbd';
 $db = $modulo['tabela'].'_'.$nome;
 $main = json_encode(DBRead($db,'*'));
@@ -95,13 +95,7 @@ endif;
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Tipo: </label>
-                        <select   name='tipo' class='form-control'  v-model='ctrls[idx].tipo'> 
-                            <option value='0'>Reduzido</option>
-                            <option value='1'>Completo</option></option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="tipo" value="1">
                     <div v-if='ctrls[idx].tipo'>
                         <div class="form-group" v-if='ctrls[idx].tipo == "0"'>
                             <label>Texto título: </label>
@@ -198,13 +192,14 @@ endif;
                     </div>
                 </div>
             </div>
-        </div><br><br>
-        <div class="col-md-12" v-if="ctrls[idx].tipo == '1'">               
+        </div>
+        <div class="col-md-12" v-if="ctrls[idx].tipo == '1' && idx >0"> 
+        <br><br>              
             <div class="form-group">
                 <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
             </div>
         </div>        
-        <div v-if="ctrls[idx].tipo == '1'" v-for='field, index in ctrls[idx].analitycs' >
+        <div v-if="ctrls[idx].tipo == '1' && idx > 0" v-for='field, index in ctrls[idx].analitycs' >
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -243,18 +238,12 @@ endif;
                     <div v-if='tipo'>
                         <div class="form-group">
                             <label>Texto conteúdo ajuda: </label>
-                            <vue-mce :config="config"  />
+                            <vue-mce :config="config" name="mce_0"/>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Tipo: </label>
-                        <select   name='tipo' class='form-control' v-model="tipo" required> 
-                            <option value='0'>Reduzido</option>
-                            <option value='1'>Completo</option></option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="tipo" value="1">                    
                     <div v-if='tipo'>
                         <div class="form-group" v-if='tipo == "0"'>
                             <label>Texto título: </label>
@@ -352,12 +341,12 @@ endif;
                 </div>
             </div>
         </div><br><br>
-        <div class="col-md-12" v-if="tipo == 1">               
+        <div class="col-md-12" v-if="idx == 0">               
             <div class="form-group">
                 <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
             </div>
         </div>        
-        <div v-if="tipo == 1" v-for='field, index in analitycs' >
+        <div v-if="idx == 0" v-for='field, index in analitycs' >
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -410,8 +399,8 @@ endif;
         el:".card",
         data: {
             config,
-            tipo:null,
-            idx:null,
+            tipo:1,
+            idx:0,
             status:'<?php echo $status ?>',
             ctrls:<?php echo $main ?>,
             filho:'<?php echo $filho ?>',
