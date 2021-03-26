@@ -1,3 +1,0 @@
-[15-Mar-2021 21:47:39 UTC] PHP Warning:  require_once(../../includes/funcoes.php): failed to open stream: No such file or directory in /home2/templatesweb/public_html/wacontrol-aula/wa/lgbd/api/api.php on line 3
-[15-Mar-2021 21:47:39 UTC] PHP Fatal error:  require_once(): Failed opening required '../../includes/funcoes.php' (include_path='.:/opt/cpanel/ea-php72/root/usr/share/pear') in /home2/templatesweb/public_html/wacontrol-aula/wa/lgbd/api/api.php on line 3
-[15-Mar-2021 21:57:47 UTC] PHP Fatal error:  Cannot use [] for reading in /home2/templatesweb/public_html/wacontrol-aula/wa/lgbd/api/api.php on line 13
