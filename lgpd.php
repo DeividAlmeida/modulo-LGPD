@@ -29,7 +29,7 @@
     			        <a class="btn btn-sm btn-primary dropdown-toggle" href="#" data-toggle="dropdown">Avisos</a>
     				<div class="dropdown-menu dropdown-menu-left" x-placement="bottom-start">
     					<a class="dropdown-item " href="?">Ver Avisos</a>
-    						<a class="dropdown-item" href="#" onclick="vue.status=0;vue.idx=0">Cadastrar Avisos</a>
+    						<a class="dropdown-item" href="#" onclick="vue.status=0;vue.idx=-1">Cadastrar Avisos</a>
     				</div>
     			</span>			
     		

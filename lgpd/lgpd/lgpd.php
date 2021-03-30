@@ -22,7 +22,7 @@ endif;
     <div id="control" v-if="!status">
         <div class="card-header white" >
             <strong>Adicionar aviso</strong>
-                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" @click="move(0, 0)" >
+                <a class="adicionarListagemItem tooltips" data-tooltip="Adicionar" href="#" @click="move(0, -1)" >
                     <i class="icon-plus blue lighten-2 avatar"></i> 
                 </a>
         </div>
@@ -80,7 +80,7 @@ endif;
     </div>
     <div class="card-body" v-if="idx != null">
         <form method="post" :action="'?<?php echo $nome ?>&salvar='+status" enctype="multipart/form-data">            
-            <div class="row" v-if="idx >0">
+            <div class="row" v-if="idx >= 0">
                 <input type="hidden" name="analitycs" :value="JSON.stringify(ctrls[idx].analitycs)">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -193,15 +193,15 @@ endif;
                     </div>
                 </div>
             </div>
-            <div class="row" v-if="idx >0">
-                <div class="col-md-12" v-if="ctrls[idx].tipo == '1' && idx >0"> 
+            <div class="row" v-if="idx >=0">
+                <div class="col-md-12" v-if="ctrls[idx].tipo == '1' && idx >=0"> 
                     <br><br>              
                     <div class="form-group">
                         <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
                     </div>
                 </div> 
             </div>
-            <div v-if="idx > 0"  >
+            <div v-if="idx >= 0"  >
                 <div class="row" v-if="ctrls[idx].tipo == '1'" v-for='field, index in ctrls[idx].analitycs'>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -229,7 +229,7 @@ endif;
                     </div>            
                 </div>
             </div>
-            <div class="row" v-if="idx == 0">
+            <div class="row" v-if="idx == -1">
                 <input type="hidden" name="analitycs" :value="JSON.stringify(analitycs)">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -343,14 +343,14 @@ endif;
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12" v-if="idx == 0">               
+                <div class="col-md-12" v-if="idx == -1">               
                     <br><br>
                     <div class="form-group">
                         <div class="col-md-12"><button type="button" @click="add" class="btn btn-primary btnAdd" style="margin-bottom: 15px;"><i class=" icon-plus"></i></button></div>
                     </div>
                 </div> 
             </div>     
-            <div v-if="idx == 0" v-for='field, index in analitycs' >
+            <div v-if="idx == -1" v-for='field, index in analitycs' >
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
