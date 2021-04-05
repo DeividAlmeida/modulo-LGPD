@@ -70,7 +70,7 @@
             height: auto;
             background: #fff;
             z-index: 9999999999;
-            top:15%;
+            top:12%;
             left:25%;
             padding:30px;
         }
@@ -218,7 +218,7 @@
         .controle{
             overflow-x:hidden;
             overflow-y:scroll;
-            max-height:150px;
+            max-height:250px;
         }
         #lgpd_btn{
             margin-top: 15px;
@@ -270,7 +270,7 @@
             height: auto;
             background: #fff;
             z-index: 9999999999;
-            top: 15%;
+            top: 7%;
             left: 11%;
             padding: 30px;
         }

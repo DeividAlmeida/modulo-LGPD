@@ -67,7 +67,7 @@ if(isset($_GET['Deletar'])){
     $query  = DBDelete($db,"id = '{$id}'");
 }
 #REDIRECIONAR
-if(isset($query)){
+if(isset($_GET['Deletar'])||isset($_GET['modo'])){
     if ($query != 0)  {
         Redireciona($UrlPage.'?sucesso'.$route);
     } else {
