@@ -168,12 +168,12 @@
         padding: 50px;
         }
 
-        .form-group {
+        .form-group_lgpd {
         display: block;
         margin-bottom: 15px;
         }
 
-        .form-group input {
+        .form-group_lgpd input {
         padding: 0;
         height: initial;
         width: initial;
@@ -182,12 +182,12 @@
         cursor: pointer;
         }
 
-        .form-group label {
+        .form-group_lgpd label {
         position: relative;
         cursor: pointer;
         }
 
-        .form-group label:before {
+        .form-group_lgpd label:before {
         content:'';
         -webkit-appearance: none;
         background-color: transparent;
@@ -201,7 +201,7 @@
         margin-right: 5px;
         }
 
-        .form-group input:checked + label:after {
+        .form-group_lgpd input:checked + label:after {
         content: '';
         display: block;
         position: absolute;

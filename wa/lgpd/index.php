@@ -44,8 +44,8 @@ $db =  json_encode($banco);
         <div v-if="idx" class="lgpd_popup">            
             <div class="controle">
                 <div class="lgpd_anali" v-for="row, id of db.analitycs">
-                    <b class="lgpd_titulo_anali form-group">{{row.titulo}}</b>
-                    <div class="form-group mob">
+                    <b class="lgpd_titulo_anali form-group_lgpd">{{row.titulo}}</b>
+                    <div class="form-group_lgpd mob">
                         <div class="lgpd_descricao_anali">{{row.descricao}}</div>
                         <input :value="row.titulo" checked type="checkbox" :id="'css'+id">
                         <label :for="'css'+id"></label>
