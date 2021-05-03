@@ -4,7 +4,11 @@ $filho = null;
 $pai = 'lgpd';
 $db = $modulo['tabela'].'_'.$nome;
 $main = json_encode(DBRead($db,'*'));
-$status = $_GET[$nome];
+if(isset($_GET[$nome])){
+    $status = $_GET[$nome];
+}else{
+    $status = null;
+}
 if(isset($_GET['salvar'])):
     foreach($_POST as $name => $valor){
         $data[$name]=$valor;
