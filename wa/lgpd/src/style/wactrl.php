@@ -154,7 +154,7 @@
             margin:15px;
         }
         
-        ::-webkit-scrollbar {
+        .lgpd_conteudo::-webkit-scrollbar {
         width: 0px;
         }
         ::-webkit-scrollbar-thumb {

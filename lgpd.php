@@ -10,7 +10,6 @@
 	echo DBRead($modulo['tabela'],'*',"WHERE id = '1'")[0]['modo'];
 
 ?>
-
 <div class="has-sidebar-left">
     <header class="blue accent-3 relative nav-sticky">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
